@@ -38,4 +38,33 @@ public class DeliveryTest {
                 .shouldBe(Condition.visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate));
     }
+
+
+    @Test
+    void shouldRegisterWithComplexElements() {
+        String planningDate = generateDate(7);
+        String dayToSelect = LocalDate.now().plusDays(7).format(DateTimeFormatter.ofPattern("d"));
+
+        open("http://localhost:9999");
+
+        $("[data-test-id='city'] input").setValue("Са");
+        $$(".menu-item__control").find(Condition.text("Самара")).click();
+
+        $("[data-test-id='date'] input").click();
+
+        if (!LocalDate.now().getMonth().equals(LocalDate.now().plusDays(7).getMonth())) {
+            $(".calendar__arrow_direction_right[data-step='1']").click();
+        }
+
+        $$("td.calendar__day").find(Condition.exactText(dayToSelect)).click();
+
+        $("[data-test-id='name'] input").setValue("Попихин Антон");
+        $("[data-test-id='phone'] input").setValue("+79012345678");
+        $("[data-test-id='agreement']").click();
+        $$("button").find(Condition.exactText("Забронировать")).click();
+
+        $(".notification__content")
+                .shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate));
+    }
 }
