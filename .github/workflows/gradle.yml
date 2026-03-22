@@ -13,9 +13,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Start SUT
-        # Запускаем наше приложение в фоновом режиме
         run: java -jar ./artifacts/app-card-delivery.jar &
       - name: Build with Gradle
-        # Запускаем тесты в режиме headless
         run: ./gradlew test -Dselenide.headless=true --info
