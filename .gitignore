@@ -1,0 +1,6 @@
+.gradle
+build/
+!artifacts/app-card-delivery.jar
+.idea/
+*.iml
+out/
